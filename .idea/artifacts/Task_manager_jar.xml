@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Task_manager:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Task_manager_jar</output-path>
+    <root id="archive" name="Task_manager.jar">
+      <element id="module-output" name="Task_manager" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.16.1/jackson-core-2.16.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.16.1/jackson-annotations-2.16.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
