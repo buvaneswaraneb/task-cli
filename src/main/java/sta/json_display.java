@@ -1,7 +1,10 @@
 package sta;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,10 +13,12 @@ public class json_display extends json_engine{
 
     ObjectMapper objectMapper = new ObjectMapper();
     JsonNode json_node;
+    Path path  = Path.of("help.txt");
+
 
 
     //display warning
-    private void displayWarning(String warning){
+    public void displayWarning(String warning){
         System.out.println(warning);
     }
 
@@ -28,6 +33,31 @@ public class json_display extends json_engine{
         }
 
     } 
+
+    public void helper() {
+        System.out.println(path.toString());
+        File help = new File(path.toString());
+        for (int i = 0; i < 10; i++) System.out.print("=");
+        System.out.print(" Help ");
+        for (int i = 0; i < 10; i++) System.out.print("=");
+        System.out.println();
+
+        if (!help.exists()){
+            System.out.println("Error Occuried help.txt doesn\'t exits");
+            return;
+        }
+
+        try(Scanner file_reader = new Scanner(help)){
+            while(file_reader.hasNextLine()){
+                String data = file_reader.nextLine();
+                System.out.println(data);
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("Error File Not Found");
+        }
+    
+    }
 
     public void filter (String status) throws IOException{
         json_node = objectMapper.readTree(new File(json_fileName));

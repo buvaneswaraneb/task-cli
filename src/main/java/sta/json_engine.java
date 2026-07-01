@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -25,6 +26,7 @@ public class json_engine{
 
     private String getJsonId() throws IOException{
         File json_id = new File(jsonId_filename);
+        String key = "";
         ObjectMapper obmap = new ObjectMapper();
     
         ObjectNode json_id_node;
@@ -34,9 +36,19 @@ public class json_engine{
         else {
             json_id_node = obmap.createObjectNode();
             ArrayNode id_array = obmap.createArrayNode();
+            id_array.add("1");
+            json_id_node.set("id",id_array);
+            ArrayNode deleted_keys = obmap.createArrayNode();
+            json_id_node.set("deleted_key", deleted_keys);
+            obmap.writeValue(json_id, json_id_node);
         }
 
-        return String.valueOf("1");
+        ArrayNode arr = (ArrayNode) json_id_node.get("id");
+        for (JsonNode a: arr) key = a.asText();
+        key = String.valueOf((key.charAt(0)-'0')+1);
+        arr.add(key);
+        obmap.writeValue(json_id, json_id_node);
+        return key;
     }
 
     private void addInnerJson(ObjectNode inner_node , String id , String description){
@@ -51,7 +63,7 @@ public class json_engine{
         
     }
 
-    public void create_json(String description) throws IOException{
+    public String create_json(String description) throws IOException{
 
         if (isFileExists()) 
             json_node = (ObjectNode) objectMapper.readTree(new File(json_fileName));
@@ -68,14 +80,16 @@ public class json_engine{
 
         // write to json 
         objectMapper.writeValue(file,json_node);
+
+        return json_id;
     } 
 
 
-    public void update_json_description(int id , String task) throws IOException{
+    public void update_json_description(String id , String task) throws IOException{
 
         json_node = (ObjectNode) objectMapper.readTree(new File(json_fileName));
 
-        ObjectNode update_json = (ObjectNode) json_node.get(String.valueOf(id));
+        ObjectNode update_json = (ObjectNode) json_node.get(id);
         update_json.put("description",task);
 
         LocalDateTime date = LocalDateTime.now();
@@ -84,11 +98,29 @@ public class json_engine{
         objectMapper.writeValue(file , json_node);
     }
 
-    public 
+    public void update_json_status(String target_status, String change_status) throws IOException{
+      JsonNode jsonNode = objectMapper.readTree(new File(json_fileName));
 
-    public void delete_json(int id) throws IOException{
+      for (JsonNode node : jsonNode){
+
+        if (!node.get("id").asText().equals(target_status)) 
+            continue;
+
+        ((ObjectNode)node).put("status",change_status);
+        LocalDateTime time = LocalDateTime.now();
+        ((ObjectNode)node).put("updatedAt", String.valueOf(time) );
+        objectMapper.writeValue(new File(json_fileName),jsonNode);
+      }
+
+    }
+
+    public void delete_json(String id) throws IOException{
         json_node = (ObjectNode) objectMapper.readTree(new File(json_fileName));
-        json_node.remove("1");
+        JsonNode keys_node = objectMapper.readTree(new File(jsonId_filename));
+        ArrayNode keys_array = (ArrayNode)keys_node.get("id");
+        
+
+        json_node.remove(id);
         objectMapper.writeValue(file, json_node);
     }
 
