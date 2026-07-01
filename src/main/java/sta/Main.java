@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    static void main(String[] args)throws IOException{
+    public static void main(String[] args)throws IOException{
         json_engine engine = new json_engine();
         boolean loop = true;
         Scanner s = new Scanner(System.in);

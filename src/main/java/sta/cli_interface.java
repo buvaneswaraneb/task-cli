@@ -24,7 +24,7 @@ public class cli_interface {
 
         if (args.length <= 1) return "\n\ntask-cli arguments missing.\nTo get started \n\t \" task-cli add <task description> \"";
         if(!Arrays.stream(allowed).anyMatch(args[1]::equals)) return "\n\nOperation Invalid please enter a valid operation";
-        
+        if(!(args[1].equals("add") ) && !(jsn_engine.isFileExists())) return "\n Tasks not found get started with \n\t \" task-cli add <task description> \"";
         if (args[1].equals("add")){ 
             if ((args.length != 3)) return "\n\nMissing Task description\n\t\"task-cli add <task description>\"";
             add(args[2]);
