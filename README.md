@@ -2,6 +2,8 @@
 
 A simple Command Line Interface (CLI) application for managing your tasks, built with Java and Maven.
 
+This project is based on the [Task Tracker project idea from roadmap.sh](https://roadmap.sh/projects/task-tracker).
+
 ## How to Build and Run
 
 Since this project uses Maven, you can build and run it using the following commands:
